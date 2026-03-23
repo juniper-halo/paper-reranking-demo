@@ -40,12 +40,31 @@ For each query, schema slot values are manually instantiated and stored in `data
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
+mkdir -p .env
+cp .env.example .env/.env
 ```
 
-Set `SEMANTIC_SCHOLAR_API_KEY` in your environment (or `.env`, if you use a dotenv loader).
+Set `SEMANTIC_SCHOLAR_API_KEY` in `.env/.env` (or export it directly in your shell).
 
-Run the scaffolded demo pipeline:
+## Demo Workflow (Notebook-First)
+
+Run the demo using notebooks in this order:
+
+1. `notebooks/01_explore_baseline.ipynb`
+  - retrieves baseline candidates from Semantic Scholar
+  - saves `data/outputs/notebook_baseline_preview.csv`
+2. `notebooks/02_reranking_demo.ipynb`
+  - runs two-stage retrieval + reranking
+  - saves `data/outputs/notebook_reranked_preview.csv`
+  - saves `data/outputs/reranked_results.csv`
+3. `notebooks/03_compare_baseline_vs_reranked.ipynb`
+  - compares baseline vs reranked outputs side-by-side
+  - saves `data/outputs/comparison_rank_shift.csv`
+  - saves `data/outputs/comparison_summary.csv`
+
+## Optional CLI Run
+
+If you prefer running from the terminal instead of notebooks:
 
 ```bash
 python -m src.main \
@@ -56,11 +75,11 @@ python -m src.main \
 
 ## Current Status
 
-This repository currently provides a modular scaffold with TODO-marked placeholders:
+The end-to-end demo flow is implemented:
 
-- retrieval client and candidate conversion are skeletonized
-- semantic embedding/similarity logic is scaffolded
-- recency normalization and weighted combination are lightly implemented
+- Stage 1 retrieval from Semantic Scholar
+- Stage 2 semantic + recency scoring with weighted reranking
+- Notebook-driven output inspection and comparison artifacts
 
 ## TODO: Future Work
 
