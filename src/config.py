@@ -26,7 +26,3 @@ DEFAULT_QUERY_FILE: Path = QUERY_DIR / "example_queries.json"
 DEFAULT_OUTPUT_FILE: Path = OUTPUT_DIR / "reranked_results.csv"
 
 SEMANTIC_SCHOLAR_API_KEY: str | None = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
-
-# TODO: add config loading from environment profile files.
-# TODO: allow CLI/env overrides for model name and weight presets.
-# TODO: add validation for weight sum and required keys.
