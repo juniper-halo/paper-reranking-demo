@@ -23,9 +23,6 @@ def load_query_specs(path: Path | str) -> list[QuerySpec]:
         }
       ]
     }
-
-    TODO: validate required fields and allowed recency preferences.
-    TODO: add pydantic/schema-based validation for stronger guarantees.
     """
     payload = load_json(path)
     query_items = payload.get("queries", [])
