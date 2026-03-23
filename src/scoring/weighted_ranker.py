@@ -24,16 +24,33 @@ def compute_weighted_score(
     )
 
 
+def _validate_score_ranges(
+    criterion_scores_by_paper: Mapping[str, Mapping[str, float]],
+    *,
+    min_score: float = 0.0,
+    max_score: float = 1.0,
+) -> None:
+    """Validate per-criterion scores are within the expected normalized range."""
+    for paper_id, criterion_scores in criterion_scores_by_paper.items():
+        for criterion, score in criterion_scores.items():
+            numeric_score = float(score)
+            if not (min_score <= numeric_score <= max_score):
+                raise ValueError(
+                    f"Score out of range for paper '{paper_id}', criterion '{criterion}': "
+                    f"{numeric_score} not in [{min_score}, {max_score}]"
+                )
+
+
 def rank_papers(
     papers: Sequence[Paper],
     criterion_scores_by_paper: Mapping[str, Mapping[str, float]],
     weights: Mapping[str, float],
+    validate_ranges: bool = True,
 ) -> list[ScoreResult]:
-    """Combine criterion scores and return papers sorted by final score descending.
+    """Combine criterion scores and return papers sorted by final score descending."""
+    if validate_ranges:
+        _validate_score_ranges(criterion_scores_by_paper)
 
-    TODO: add optional tie-breaking strategy (e.g., recency or citation count).
-    TODO: add normalization checks to ensure criteria are in consistent ranges.
-    """
     results: list[ScoreResult] = []
 
     for paper in papers:
@@ -48,5 +65,12 @@ def rank_papers(
             )
         )
 
-    results.sort(key=lambda item: item.final_score, reverse=True)
+    results.sort(
+        key=lambda item: (
+            item.final_score,
+            float(item.criterion_scores.get("recency", 0.0)),
+        ),
+        reverse=True,
+    )
+
     return results
