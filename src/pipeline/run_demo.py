@@ -68,10 +68,27 @@ def run_demo(
             continue
 
         # 3) Compute semantic criterion scores.
-        semantic_scores = compute_semantic_scores(papers=candidates,
-                                                  query_spec=query_spec,
-                                                  embedder=None,
-                                                  slot_names=("topic_match", "method_match", "relationship_match"))
+        try:
+            semantic_scores = compute_semantic_scores(
+                papers=candidates,
+                query_spec=query_spec,
+                embedder=None,
+                slot_names=("topic_match", "method_match", "relationship_match"),
+            )
+        except Exception as exception:
+            logger.warning(
+                "Semantic scoring failed for query '%s'; using zero semantic scores. Error: %s",
+                query_spec.raw_query,
+                exception,
+            )
+            semantic_scores = {
+                paper.paper_id: {
+                    "topic_match": 0.0,
+                    "method_match": 0.0,
+                    "relationship_match": 0.0,
+                }
+                for paper in candidates
+            }
 
         # 4) Compute normalized recency score.
         recency_scores = score_recency_for_papers(candidates)
