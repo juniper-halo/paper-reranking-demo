@@ -1,0 +1,11 @@
+baseline_rank,paper_id,title,year,venue
+1,8495965cf4ff5eb8010c7f126690106c135f23ab,Kolmogorov–Arnold graph neural networks for molecular property prediction,2025,Nature Machine Intelligence
+2,ee75d0675c7adedded789e38500cc0b32b9fb4ae,Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking,2023,Nature Communications
+3,c639624193847693bb2fd4b1319ca3229093c412,Mfgnn: Multi‐Scale Feature‐Attentive Graph Neural Networks for Molecular Property Prediction,2025,Journal of Computational Chemistry
+4,7675fc907efe86a45f3259784d644897dc95af1b,Quantitative evaluation of explainable graph neural networks for molecular property prediction,2021,Patterns
+5,049c6ba3c6776e474cd2b60d081f47299f85091a,Physical Pooling Functions in Graph Neural Networks for Molecular Property Prediction,2022,Computers and Chemical Engineering
+6,b7fdef4f00bed1ebb70d8d86534bfd76a27ffb6c,Consistency-regularized graph neural networks for molecular property prediction,2025,Neural Networks
+7,6039ef4676d535ef5b60f6315036a84b9d5ebe3b,Chain-aware graph neural networks for molecular property prediction,2024,Bioinform.
+8,be5d48ff7434525a965390f95ceb9902a46e76e0,Multi-View Graph Neural Networks for Molecular Property Prediction,2020,
+9,c70d99bc680615b38111f949ce1ff0cc171d3967,Cross-dependent graph neural networks for molecular property prediction,2022,Bioinform.
+10,82a4356ab71189ae9837b7752ba31fa570a04514,Composite Graph Neural Networks for Molecular Property Prediction,2024,International Journal of Molecular Sciences
