@@ -1,0 +1,25 @@
+{
+  "queries": [
+    {
+      "raw_query": "Graph neural networks for molecular property prediction",
+      "topic_text": "molecular property prediction using graph neural networks",
+      "method_text": "message passing neural networks and graph representation learning",
+      "relationship_text": "relationship between molecular graph structure and predicted chemical properties",
+      "recency_preference": "recent"
+    },
+    {
+      "raw_query": "RAG methods for scientific question answering",
+      "topic_text": "retrieval-augmented generation for scientific QA",
+      "method_text": "dense retrieval plus generation with citations",
+      "relationship_text": "how retrieval quality impacts factuality and answer grounding",
+      "recency_preference": "recent"
+    },
+    {
+      "raw_query": "Causal inference in education policy",
+      "topic_text": "education policy evaluation and causal inference",
+      "method_text": "difference-in-differences and synthetic control methods",
+      "relationship_text": "relationship between policy interventions and student outcomes",
+      "recency_preference": "balanced"
+    }
+  ]
+}
