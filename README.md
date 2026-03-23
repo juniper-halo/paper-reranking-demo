@@ -81,12 +81,8 @@ The end-to-end demo flow is implemented:
 - Stage 2 semantic + recency scoring with weighted reranking
 - Notebook-driven output inspection and comparison artifacts
 
-## TODO: Future Work
+## Future Work
 
 - dynamic criteria extraction
 - LLM-based judging
 - larger evaluation set
-
-## Security Note
-
-A previous local file (`test.py`) contained a raw API key string and has been removed from this scaffold. Rotate/revoke that key immediately if it was ever used.
