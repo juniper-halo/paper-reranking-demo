@@ -50,7 +50,20 @@ class SemanticScholarClient:
         max_attempts = 3
         response: requests.Response | None = None
         for attempt in range(1, max_attempts + 1):
-            response = self.session.get(url, params=params, headers=headers, timeout=15)
+            try:
+                response = self.session.get(url, params=params, headers=headers, timeout=15)
+            except requests.exceptions.RequestException as exception:
+                logger.warning(
+                    "Semantic Scholar request failed (attempt %d/%d): %s",
+                    attempt,
+                    max_attempts,
+                    exception,
+                )
+                if attempt < max_attempts:
+                    time.sleep(float(2 ** (attempt - 1)))
+                    continue
+                return []
+
             if response.status_code == 429 and attempt < max_attempts:
                 retry_after = response.headers.get("Retry-After")
                 sleep_seconds = float(retry_after) if retry_after else float(2 ** (attempt - 1))
@@ -68,7 +81,16 @@ class SemanticScholarClient:
             logger.error("No response received from Semantic Scholar API.")
             return []
 
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as exception:
+            logger.error(
+                "Semantic Scholar request returned HTTP %d for query '%s': %s",
+                response.status_code,
+                query,
+                exception,
+            )
+            return []
 
         try:
             payload = response.json()

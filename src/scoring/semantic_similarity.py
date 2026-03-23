@@ -35,17 +35,6 @@ def cosine_similarity_matrix(query_embeddings: np.ndarray, doc_embeddings: np.nd
     return normalized_q @ normalized_d.T
 
 
-def initialize_zero_semantic_scores(
-    papers: Sequence[Paper],
-    slot_names: Sequence[str],
-) -> dict[str, dict[str, float]]:
-    """Create placeholder semantic scores for each paper/slot pair."""
-    scores: dict[str, dict[str, float]] = {}
-    for paper in papers:
-        scores[paper.paper_id] = {slot: 0.0 for slot in slot_names}
-    return scores
-
-
 def compute_semantic_scores(
     papers: Sequence[Paper],
     query_spec: QuerySpec,

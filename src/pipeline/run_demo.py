@@ -3,8 +3,16 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 
 import pandas as pd
+
+# Support running as a script (e.g., `python src/pipeline/run_demo.py`) by
+# ensuring project root is available for absolute `src.*` imports.
+if __package__ in (None, ""):
+    project_root = Path(__file__).resolve().parents[2]
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
 
 from src import config
 from src.models.score_result import ScoreResult
@@ -12,7 +20,7 @@ from src.retrieval.candidate_retriever import CandidateRetriever
 from src.retrieval.semantic_scholar_client import SemanticScholarClient
 from src.schema.query_instantiator import load_query_specs
 from src.scoring.recency import score_recency_for_papers
-from src.scoring.semantic_similarity import initialize_zero_semantic_scores
+from src.scoring.semantic_similarity import compute_semantic_scores
 from src.scoring.weighted_ranker import rank_papers
 from src.utils.logging_utils import setup_logger
 
@@ -38,11 +46,7 @@ def run_demo(
     output_path: Path | str = config.DEFAULT_OUTPUT_FILE,
     top_k: int = config.TOP_K,
 ) -> pd.DataFrame:
-    """Run the scaffold pipeline and return a dataframe of ranked results.
-
-    This function intentionally contains TODO-heavy placeholders. It establishes
-    the expected control flow and interfaces for later implementation.
-    """
+    """Run the retrieval and reranking pipeline and return a dataframe of results."""
     logger = setup_logger(__name__)
 
     # 1) Load query specs.
@@ -60,17 +64,14 @@ def run_demo(
         candidates = retriever.retrieve_candidates(raw_query=query_spec.raw_query, top_k=top_k)
 
         if not candidates:
-            logger.warning(
-                "No candidates retrieved for query. TODO: implement Semantic Scholar API retrieval details."
-            )
+            logger.warning("No candidates retrieved for query: %s", query_spec.raw_query)
             continue
 
         # 3) Compute semantic criterion scores.
-        # TODO: replace zero placeholder with embedding-based similarity scoring.
-        semantic_scores = initialize_zero_semantic_scores(
-            papers=candidates,
-            slot_names=("topic_match", "method_match", "relationship_match"),
-        )
+        semantic_scores = compute_semantic_scores(papers=candidates,
+                                                  query_spec=query_spec,
+                                                  embedder=None,
+                                                  slot_names=("topic_match", "method_match", "relationship_match"))
 
         # 4) Compute normalized recency score.
         recency_scores = score_recency_for_papers(candidates)

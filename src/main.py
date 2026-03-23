@@ -4,6 +4,14 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
+
+# Support running as a script (e.g., `python src/main.py`) in addition to
+# module mode (`python -m src.main`) by ensuring project root is on sys.path.
+if __package__ in (None, ""):
+    project_root = Path(__file__).resolve().parents[1]
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
 
 from src import config
 from src.pipeline.run_demo import run_demo
@@ -44,8 +52,6 @@ def main() -> int:
     logger.info("Output: %s", args.output)
     logger.info("Top-K: %d", args.top_k)
 
-    # TODO: add argument support for custom weights and embedding model overrides.
-    # TODO: add optional debug mode that saves intermediate per-criterion scores.
     results_df = run_demo(query_path=args.queries, output_path=args.output, top_k=args.top_k)
 
     logger.info("Finished scaffold run. Rows written: %d", len(results_df))
